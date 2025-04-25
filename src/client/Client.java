@@ -1,5 +1,7 @@
 package client;
 
+import com.beust.jcommander.JCommander;
+
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
@@ -34,4 +36,15 @@ public class Client {
         }
 
     }
+
+    private void parseArgs(){
+        ArgsParser argsParser = new ArgsParser();
+
+        JCommander.newBuilder()
+                .addObject(argsParser)
+                .build()
+                .parse();
+    }
+
+
 }
