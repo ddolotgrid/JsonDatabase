@@ -1,24 +1,29 @@
 package server;
 
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 public class Database {
-    private final String[] storage = new String[1000];
+    private final Map<String,String> storage;
 
     public Database() {
-        Arrays.fill(storage,"");
+        storage = new HashMap<>();
     }
 
-    public String get(int index){
-        return storage[index];
+    public String get(String key){
+        return storage.getOrDefault(key,
+                ""
+                );
     }
 
-    public void set(int index, String value){
-        storage[index] = value;
+    public void set(String key, String value){
+        storage.put(key,value);
     }
 
-    public void delete(int index){
-        storage[index] = "";
+    public void delete(String key){
+        storage.remove(key);
     }
 
 }

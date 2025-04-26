@@ -7,9 +7,9 @@ public class ArgsParser {
     @Parameter(names = {"-t"},description = "type of the request")
     protected String type;
 
-    @Parameter(names = {"-i"},description = "index of the cell")
-    String index;
+    @Parameter(names = {"-k"},description = "index of the cell")
+    String key;
 
-    @Parameter(names = {"-m"},description = "message to save in the database")
-    String msg;
+    @Parameter(names = {"-v"},description = "message to save in the database")
+    String value;
 }
