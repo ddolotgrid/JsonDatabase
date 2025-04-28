@@ -12,4 +12,7 @@ public class ArgsParser {
 
     @Parameter(names = {"-v"},description = "message to save in the database")
     String value;
+
+    @Parameter(names = {"-in"},description = "tells the path to file")
+    String in;
 }

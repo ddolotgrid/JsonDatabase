@@ -1,23 +1,18 @@
 package server;
 
 public class Response {
-
-    private  String response;
-    private String reason;
+    private String response;
     private String value;
-
-
-    public String getResponse() {
-        return response;
-    }
+    private String reason;
 
     public Response setResponse(String response) {
         this.response = response;
         return this;
     }
 
-    public String getReason() {
-        return reason;
+    public Response setValue(String value) {
+        this.value = value;
+        return this;
     }
 
     public Response setReason(String reason) {
@@ -25,12 +20,15 @@ public class Response {
         return this;
     }
 
-    public String getValue() {
-        return value;
+    public static Response ok() {
+        return new Response().setResponse("OK");
     }
 
-    public Response setValue(String value) {
-        this.value = value;
-        return this;
+    public static Response okWithValue(String value) {
+        return new Response().setResponse("OK").setValue(value);
+    }
+
+    public static Response error(String reason) {
+        return new Response().setResponse("ERROR").setReason(reason);
     }
 }

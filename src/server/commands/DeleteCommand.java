@@ -13,6 +13,7 @@ public class DeleteCommand implements Command{
     public DeleteCommand(Database db, String key) {
         this.db = db;
         this.key = key;
+        System.out.println("xd");
         getCommand = new GetCommand(db,key);
     }
 
@@ -22,14 +23,12 @@ public class DeleteCommand implements Command{
         if(db.get(key).isEmpty())
         {
             return json.toJson(
-                    new Response()
-                            .setResponse("ERROR")
-                            .setReason("No such key")
+                    Response.error("No such key")
                     ,Response.class
             );
         }
 
         db.delete(key);
-        return json.toJson(new Response().setResponse("OK"),Response.class);
+        return json.toJson(Response.ok(),Response.class);
     }
 }

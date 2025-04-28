@@ -19,16 +19,11 @@ public class GetCommand implements Command {
         String value = db.get(key);
         if ("".equals(value)) {
             return json.toJson(
-                    new Response()
-                            .setResponse("ERROR")
-                            .setReason("No such key")
-                    ,Response.class
+                    Response.error("No such key"),Response.class
             );
         }
         return json.toJson(
-                new Response()
-                        .setResponse("OK")
-                        .setValue(value)
+                Response.okWithValue(value)
                 ,Response.class
         );
     }

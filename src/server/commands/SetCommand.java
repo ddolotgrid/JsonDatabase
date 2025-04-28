@@ -19,7 +19,7 @@ public class SetCommand implements Command{
     public String execute() {
         Gson json = new Gson();
         db.set(key,value);
-        return json.toJson(new Response().setResponse("OK"),Response.class);
+        return json.toJson(Response.ok(),Response.class);
         }
 
 }

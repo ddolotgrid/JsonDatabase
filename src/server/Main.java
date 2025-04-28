@@ -34,8 +34,7 @@ public class Main {
 
                     JsonModel jsonModel = json.fromJson(msg, JsonModel.class);
 
-//                    String strToExecute = String.join(" ",jsonModel.getType(),jsonModel.getKey(),jsonModel.getValue());
-//                    System.out.println(strToExecute);
+//
 
                     String serverResponse = handler.executeRequest(jsonModel);
                     output.writeUTF(serverResponse);
