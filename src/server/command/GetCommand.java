@@ -1,0 +1,24 @@
+package server.command;
+
+import com.google.gson.JsonElement;
+import server.database.Database;
+import java.util.List;
+
+
+public class GetCommand implements Command {
+    private final Database db;
+    private final JsonElement key;
+
+    public GetCommand(Database db, JsonElement key) {
+        this.db = db;
+        this.key = key;
+    }
+
+    @Override
+    public String execute() {
+        List<String> keys = parseKey(key);
+        return db.get(keys).toString();
+
+    }
+    }
+

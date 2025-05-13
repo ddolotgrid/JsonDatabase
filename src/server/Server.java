@@ -1,40 +1,66 @@
 package server;
 
+import com.google.gson.Gson;
+import server.database.Database;
+import server.model.ClientRequest;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
-import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.Arrays;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class Server {
-//    private static final String ADDRESS = "127.0.0.1";
-    private static final int PORT = 4200;
+    private static final int PORT = 4000;
+    private final ExecutorService executorService = Executors.newCachedThreadPool();
+    private final Gson gson = new Gson();
+    private final Database database;
+    private final CommandHandler commandHandler;
+    private ServerSocket server;
 
-    public Server() {
-        try (ServerSocket server = new ServerSocket(PORT)) {
+    public Server(Database database) {
+        this.database = database;
+        this.commandHandler = new CommandHandler(database, this);
+    }
 
-            while (true) {
-                System.out.println("Server started!");
-                try (Socket socket = server.accept();
-                        DataInputStream input = new DataInputStream(socket.getInputStream());
-                        DataOutputStream output = new DataOutputStream(socket.getOutputStream())
-                ) {
+    public void start() {
+        try {
+            server = new ServerSocket(PORT);
+            while (!server.isClosed()) {
+                Socket socket = server.accept();
 
-                    String msg = input.readUTF();
-                    System.out.println("Received: " + msg);
-                    msg = "A record # 12 was sent!";
-                    output.writeUTF(msg);
-                    System.out.println("Sent: " + msg);
+                executorService.submit(() -> {
+                    try (
+                            DataInputStream input = new DataInputStream(socket.getInputStream());
+                            DataOutputStream output = new DataOutputStream(socket.getOutputStream())
+                    ) {
+                        String msg = input.readUTF();
+                        System.out.println("Received: " + msg);
+                        ClientRequest clientRequest = gson.fromJson(msg, ClientRequest.class);
 
-                }
+                        System.out.println(clientRequest.getKey());
+
+                        String serverResponse = commandHandler.executeRequest(clientRequest);
+
+                        output.writeUTF(serverResponse);
+                        System.out.println("Sent: " + serverResponse);
+                    } catch (IOException e) {
+                        System.err.println("Client connection error: " + e.getMessage());
+                    }
+                });
             }
-        } catch (IOException ieo) {
-
-            System.out.println(ieo.getMessage());
+        } catch (IOException e) {
+            System.err.println("Server error: " + e.getMessage());
         }
+    }
 
-
+    public void shutdown() {
+        executorService.shutdown();
+        try {
+            server.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }

@@ -1,5 +1,6 @@
 {
-  "type":"set",
-  "key":"name",
-  "value":"Sorabh"
+  "type": "get",
+  "key" : ["text"],
+  "value" : "some other text2"
+
 }
