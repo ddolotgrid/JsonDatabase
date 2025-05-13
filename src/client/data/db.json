@@ -1,6 +1,0 @@
-{
-  "type": "get",
-  "key" : ["text"],
-  "value" : "some other text2"
-
-}

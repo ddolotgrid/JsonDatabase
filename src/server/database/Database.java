@@ -6,7 +6,7 @@ import server.model.Response;
 
 import java.util.List;
 
-public class Database {
+public class Database implements IDatabase{
 
     private final JsonObject storage;
     private final JsonFileHandler fileHandler;

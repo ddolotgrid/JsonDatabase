@@ -1,0 +1,6 @@
+{
+  "type": "set",
+  "key" : ["person1","details","age"],
+  "value" : 25
+
+}

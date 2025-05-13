@@ -1,10 +1,7 @@
 package server.command;
 
-import server.database.Database;
 import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-
-import java.util.ArrayList;
+import server.database.Database;
 import java.util.List;
 
 public class SetCommand implements Command {
