@@ -7,6 +7,8 @@
     <groupId>org.ddolot</groupId>
     <artifactId>JsonDatabase</artifactId>
     <version>1.0-SNAPSHOT</version>
+    <packaging>pom</packaging>
+
 
 
     <properties>

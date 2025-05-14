@@ -1,19 +1,13 @@
 package server.model;
 
-
 import com.google.gson.JsonElement;
 import com.google.gson.annotations.Expose;
 
-
-public class Response {
+public record Response(@Expose String response, @Expose String reason, @Expose JsonElement value) {
 
     public static final Response EMPTY = builder()
-            .setResponse("OK")
+            .setResponse("ERROR")
             .setReason("No such operation")
-            .build();
-    public static final Response OK_VALUE = builder()
-            .setResponse("OK")
-            .setValue(builder().value)
             .build();
     public static final Response OK = builder()
             .setResponse("OK")
@@ -22,31 +16,6 @@ public class Response {
             .setResponse("ERROR")
             .setReason("No such key")
             .build();
-
-    @Expose
-    private final String response;
-    @Expose
-    private final String reason;
-    @Expose
-    private final JsonElement value;
-
-    public Response(String response, String reason, JsonElement value) {
-        this.response = response;
-        this.reason = reason;
-        this.value = value;
-    }
-
-    public String getResponse() {
-        return response;
-    }
-
-    public String getReason() {
-        return reason;
-    }
-
-    public JsonElement getValue() {
-        return value;
-    }
 
     public static Builder builder() {
         return new Builder();
