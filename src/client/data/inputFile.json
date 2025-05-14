@@ -1,5 +1,5 @@
 {
-  "type": "set",
+  "type": "get",
   "key" : ["person1","details","age"],
   "value" : 25
 

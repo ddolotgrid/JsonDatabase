@@ -1,10 +1,10 @@
-package server;
+package server.command;
 
-import server.command.*;
+import server.Server;
 import server.database.Database;
 import server.model.ClientRequest;
 import com.google.gson.JsonElement;
-
+import server.model.Response;
 
 public class CommandHandler {
 
@@ -16,10 +16,8 @@ public class CommandHandler {
         this.server = server;
     }
 
-    public String executeRequest(ClientRequest request) {
+    public Response executeRequest(ClientRequest request) {
         JsonElement key = request.getKey();
-        System.out.println("Executing request: " + request.getType());
-
         Command command;
 
         switch (request.getType().toLowerCase()) {
@@ -33,17 +31,13 @@ public class CommandHandler {
                 command = new DeleteCommand(db, key);
                 break;
             case "exit":
-                command = new ExitCommand();
-                String response = command.execute();
                 server.shutdown();
-                return response;
+                return Response.OK;
             default:
-                throw new RuntimeException("Unknown command type: " + request.getType());
+                return Response.EMPTY;
         }
-
         return command.execute();
     }
-
 }
 
 

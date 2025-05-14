@@ -2,6 +2,7 @@ package server.command;
 
 import com.google.gson.JsonElement;
 import server.database.Database;
+import server.model.Response;
 import java.util.List;
 
 public class SetCommand implements Command {
@@ -17,11 +18,8 @@ public class SetCommand implements Command {
     }
 
     @Override
-    public String execute() {
+    public Response execute() {
         List<String> keys = parseKey(key);
-        return db.set(keys, value).toString();
-
+        return db.set(keys, value);
     }
-
-
 }

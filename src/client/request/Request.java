@@ -1,4 +1,4 @@
-package client;
+package client.request;
 import com.beust.jcommander.Parameter;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -26,6 +26,7 @@ public class Request {
 
     @Parameter(names = {"-in", "--input-file"}, description = "File containing the request")
     public String fileName;
+
 
     public String getRequest() {
         Gson gson = new GsonBuilder()

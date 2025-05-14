@@ -1,13 +1,12 @@
 package server.command;
 
 import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-
+import server.model.Response;
 import java.util.ArrayList;
 import java.util.List;
 
 public interface Command {
-    String execute();
+    Response execute();
 
     default List<String> parseKey(JsonElement key){
         List<String> keys = new ArrayList<>();

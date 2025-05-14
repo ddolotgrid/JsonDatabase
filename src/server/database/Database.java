@@ -3,7 +3,6 @@ package server.database;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import server.model.Response;
-
 import java.util.List;
 
 public class Database implements IDatabase{
@@ -11,26 +10,27 @@ public class Database implements IDatabase{
     private final JsonObject storage;
     private final JsonFileHandler fileHandler;
 
-
     public Database(JsonFileHandler fileHandler) {
         this.fileHandler = fileHandler;
         storage = fileHandler.read();
     }
 
-
-    public JsonObject get(List<String> key) {
+    public Response get(List<String> key) {
         JsonElement current = storage;
         System.out.println(key);
         for (String k : key) {
             if (!current.isJsonObject() || !current.getAsJsonObject().has(k)) {
-                return Response.error();
+                return Response.ERROR;
             }
             current = current.getAsJsonObject().get(k);
         }
-        return Response.okWithValue(current);
+        return Response.builder()
+                .setResponse("OK")
+                .setValue(current)
+                .build();
     }
 
-    public JsonObject set(List<String> keys, JsonElement value) {
+    public Response set(List<String> keys, JsonElement value) {
         JsonObject current = storage;
         for (int i = 0; i < keys.size() - 1; i++) {
             String key = keys.get(i);
@@ -48,12 +48,10 @@ public class Database implements IDatabase{
         current.add(lastKey, value);
 
         fileHandler.write(storage);
-        return Response.ok();
+        return Response.OK;
     }
 
-
-    public JsonObject delete(List<String> keys) {
-
+    public Response delete(List<String> keys) {
         JsonObject current = storage;
         for (int i = 0; i < keys.size() - 1; i++) {
             String key = keys.get(i);
@@ -61,7 +59,7 @@ public class Database implements IDatabase{
             if (current.has(key) && current.get(key).isJsonObject()) {
                 current = current.getAsJsonObject(key);
             } else {
-                return Response.error();
+                return Response.ERROR;
             }
         }
 
@@ -69,19 +67,9 @@ public class Database implements IDatabase{
         if (current.has(lastKey)) {
             current.remove(lastKey);
             fileHandler.write(storage);
-            return Response.ok();
+            return Response.OK;
         } else {
-            return Response.error();
+            return Response.ERROR;
         }
     }
-
 }
-
-
-
-
-
-
-
-
-

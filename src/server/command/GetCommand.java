@@ -2,6 +2,7 @@ package server.command;
 
 import com.google.gson.JsonElement;
 import server.database.Database;
+import server.model.Response;
 import java.util.List;
 
 
@@ -15,10 +16,9 @@ public class GetCommand implements Command {
     }
 
     @Override
-    public String execute() {
+    public Response execute() {
         List<String> keys = parseKey(key);
-        return db.get(keys).toString();
-
-    }
+        return db.get(keys);
+        }
     }
 
