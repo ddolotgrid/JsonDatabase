@@ -10,7 +10,7 @@ import java.io.IOException;
 
 public class Request {
 
-    private static final String filePath = System.getProperty("user.dir") + "/src/client/data/";
+    private String filePath = System.getProperty("user.dir") + "/src/main/java/client/data/";
 
     @Expose
     @Parameter(names = {"-t", "--type"}, description = "Type of the request")
@@ -43,5 +43,9 @@ public class Request {
             }
         }
         return gson.toJson(this);
+    }
+
+    public void setFilePath(String filePath) {
+        this.filePath = filePath;
     }
 }

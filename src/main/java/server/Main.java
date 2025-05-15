@@ -1,15 +1,14 @@
 package server;
 
-import server.database.Database;
+import server.database.JsonDatabase;
 import server.database.JsonFileHandler;
 
 public class Main {
 
     public static void main(String[] args) {
         JsonFileHandler fileHandler = new JsonFileHandler("db.json");
-        Database database = new Database(fileHandler);
+        JsonDatabase database = new JsonDatabase(fileHandler);
         Server server = new Server(database);
-        System.out.println("Server started!");
         server.start();
     }
 

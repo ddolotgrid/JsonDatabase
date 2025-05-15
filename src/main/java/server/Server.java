@@ -3,7 +3,7 @@ package server;
 import com.google.common.util.concurrent.ThreadFactoryBuilder;
 import com.google.gson.Gson;
 import server.command.CommandHandler;
-import server.database.Database;
+import server.database.JsonDatabase;
 import server.model.ClientRequest;
 import server.model.Response;
 import java.io.DataInputStream;
@@ -24,7 +24,7 @@ public class Server {
     private ServerSocket server;
     private static final Logger logger = Logger.getLogger(Server.class.getName());
 
-    public Server(Database database) {
+    public Server(JsonDatabase database) {
         this.executorService = Executors.newCachedThreadPool(
                 new ThreadFactoryBuilder().setNameFormat("client-handler-%d").build());
         this.commandHandler = new CommandHandler(database, this);
@@ -33,6 +33,7 @@ public class Server {
     public void start() {
         try {
             server = new ServerSocket(PORT);
+            System.out.println("Server started!");
             while (!server.isClosed()) {
                 Socket socket = server.accept();
 

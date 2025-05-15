@@ -5,19 +5,18 @@ import com.google.gson.JsonObject;
 import server.model.Response;
 import java.util.List;
 
-public class Database implements IDatabase{
+public class JsonDatabase implements Database {
 
     private final JsonObject storage;
-    private final JsonFileHandler fileHandler;
+    private final FileHandler fileHandler;
 
-    public Database(JsonFileHandler fileHandler) {
+    public JsonDatabase(FileHandler fileHandler) {
         this.fileHandler = fileHandler;
         storage = fileHandler.read();
     }
 
     public Response get(List<String> key) {
         JsonElement current = storage;
-        System.out.println(key);
         for (String k : key) {
             if (!current.isJsonObject() || !current.getAsJsonObject().has(k)) {
                 return Response.ERROR;
@@ -25,8 +24,8 @@ public class Database implements IDatabase{
             current = current.getAsJsonObject().get(k);
         }
         return Response.builder()
-                .setResponse("OK")
-                .setValue(current)
+                .response("OK")
+                .value(current)
                 .build();
     }
 

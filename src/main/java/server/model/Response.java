@@ -1,20 +1,20 @@
 package server.model;
 
 import com.google.gson.JsonElement;
-import com.google.gson.annotations.Expose;
 
-public record Response(@Expose String response, @Expose String reason, @Expose JsonElement value) {
+
+public record Response(String response,String reason,JsonElement value) {
 
     public static final Response EMPTY = builder()
-            .setResponse("ERROR")
-            .setReason("No such operation")
+            .response("ERROR")
+            .reason("No such operation")
             .build();
     public static final Response OK = builder()
-            .setResponse("OK")
+            .response("OK")
             .build();
     public static final Response ERROR = builder()
-            .setResponse("ERROR")
-            .setReason("No such key")
+            .response("ERROR")
+            .reason("No such key")
             .build();
 
     public static Builder builder() {
@@ -27,17 +27,17 @@ public record Response(@Expose String response, @Expose String reason, @Expose J
         private String reason;
         private JsonElement value;
 
-        public Builder setResponse(String response) {
+        public Builder response(String response) {
             this.response = response;
             return this;
         }
 
-        public Builder setReason(String reason) {
+        public Builder reason(String reason) {
             this.reason = reason;
             return this;
         }
 
-        public Builder setValue(JsonElement value) {
+        public Builder value(JsonElement value) {
             this.value = value;
             return this;
         }

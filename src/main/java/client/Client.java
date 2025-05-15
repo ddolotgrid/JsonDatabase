@@ -18,7 +18,6 @@ public class Client {
 
     public Client(Request request) {
         this.request = request;
-        System.out.println("Client started");
     }
 
     public void start() {
@@ -27,7 +26,7 @@ public class Client {
                 DataInputStream in = new DataInputStream(socket.getInputStream());
                 DataOutputStream out = new DataOutputStream(socket.getOutputStream());
         ) {
-
+            System.out.println("Client started");
             String jsonRequest = request.getRequest();
             System.out.println("Sent: " + jsonRequest);
             out.writeUTF(jsonRequest); // send request to server
@@ -38,6 +37,5 @@ public class Client {
         } catch (IOException e) {
             LOGGER.log(Level.SEVERE,"Client connection error" + e.getMessage());
         }
-
     }
 }
