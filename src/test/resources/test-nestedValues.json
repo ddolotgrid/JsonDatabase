@@ -1,0 +1,9 @@
+{
+  "type": "get",
+  "key" : ["person1","details"],
+  "value" : {
+    "age" : 25,
+    "weight" : 88
+  }
+
+}

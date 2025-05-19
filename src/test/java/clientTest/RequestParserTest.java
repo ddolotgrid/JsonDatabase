@@ -4,8 +4,11 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import client.request.Request;
 import client.request.RequestParser;
+import com.beust.jcommander.ParameterException;
 import org.junit.jupiter.api.Test;
-import static org.junit.jupiter.api.Assertions.*;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
+
 
 class RequestParserTest {
 
@@ -18,10 +21,10 @@ class RequestParserTest {
         Request request = RequestParser.parseArgs(args);
 
         // then
-        assertEquals("set", request.type);
-        assertEquals("name", request.key);
-        assertEquals("John", request.value);
-        assertNull(request.fileName);
+        assertEquals("set", request.getType());
+        assertEquals("name", request.getKey());
+        assertEquals("John", request.getValue());
+        assertNull(request.getFileName());
     }
 
     @Test
@@ -33,6 +36,15 @@ class RequestParserTest {
         Request request = RequestParser.parseArgs(args);
 
         // then
-        assertEquals("test.json", request.fileName);
+        assertEquals("test.json", request.getFileName());
+    }
+    @ParameterizedTest
+    @ValueSource(strings = {"in","t","k"})
+    void shouldThrowExceptionWithEmptyFlag(String flag) {
+        String[] args = {flag};
+
+        assertThrows(ParameterException.class, () -> {
+            RequestParser.parseArgs(args);
+        });
     }
 }

@@ -2,7 +2,6 @@ package server.model;
 
 import com.google.gson.JsonElement;
 
-
 public record Response(String response,String reason,JsonElement value) {
 
     public static final Response EMPTY = builder()

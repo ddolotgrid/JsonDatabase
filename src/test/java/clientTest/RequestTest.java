@@ -1,72 +1,75 @@
 package clientTest;
 
 import client.request.Request;
-import org.junit.jupiter.api.BeforeAll;
+import com.google.gson.JsonParser;
+import com.google.gson.JsonSyntaxException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
-import java.io.File;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class RequestTest {
-    private Request request;
-    private static Path tempFile;
 
-    @BeforeAll
-    static void setUpAll() throws IOException {
-        tempFile = Files.createTempFile("test_", ".txt");
-        String jsonContent = "{\"type\":\"delete\",\"key\":\"username\"}";
-        Files.writeString(tempFile, jsonContent);
-    }
+class RequestTest {
+
+    private Request request;
+
+    private final String testFilePath = System.getProperty("user.dir") + "/src/test/resources/";
 
     @BeforeEach
     void setUp(){
         request = new Request();
+        request.setType("get");
+        request.setFilePath(testFilePath);
+    }
+
+    @Test
+    void shouldHandleCommandLineArgs() throws IOException{
+        // given
+        request.setKey("person");
+        request.setValue("value");
+
+        // when
+        String actualJson = request.getRequest();
+        String expectedJson = "{\"type\":\"get\",\"key\":\"person\",\"value\":\"value\"}";
+
+        // then
+        assertEquals(
+                JsonParser.parseString(expectedJson),
+                JsonParser.parseString(actualJson)
+        );
     }
     @Test
-    void shouldReturnJsonFromFieldsIfFileNameIsNull() {
+    void shouldHandleJsonFileArgs() throws IOException{
         // given
-        request.type = "get";
-        request.key = "name";
-
+        request.setFileName("test-nestedValues.json");
         // when
         String json = request.getRequest();
 
         // then
-        assertTrue(json.contains("\"type\":\"get\""));
-        assertTrue(json.contains("\"key\":\"name\""));
+        assertTrue(json.contains("\"age\":25"));
+        assertTrue(json.contains("\"weight\":88"));
     }
-    @Test
-    void shouldReturnJsonFromFile() throws IOException {
+    @ParameterizedTest
+    @ValueSource(strings = {"test-emptyFile","test-blankFile"})
+    void shouldHandleEmptyFiles(String file){
         // given
-        String testPath = tempFile.getParent().toString() + "/";
-        request.setFilePath(testPath);
-        request.fileName = tempFile.getFileName().toString();
+        request.setFileName(file+".json");
 
-        // when
-        String result = request.getRequest();
-
-        // then
-        assertTrue(result.contains("{\"type\":\"delete\",\"key\":\"username\"}"));
+        assertThrows(IllegalArgumentException.class, () -> {
+           request.getRequest();
+        });
     }
+
     @Test
-    void shouldHandleInvalidFile() throws IOException {
+    void shouldHandleInvalidFormat(){
         // given
-        request.setFilePath("invalidPath");
-        request.fileName = tempFile.getFileName().toString();
+        request.setFileName("test-invalidFormatFile.json");
 
-        // when
-        String result = request.getRequest();
-
-        // then
-        assertEquals(result,"{}");
+        assertThrows(JsonSyntaxException.class, () -> {
+            request.getRequest();
+        });
     }
-
-
-
-
 }

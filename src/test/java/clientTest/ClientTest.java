@@ -1,5 +1,0 @@
-package clientTest;
-
-class ClientTest {
-
-}

@@ -13,12 +13,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class CommandTest {
 
-    private final Command command = new Command() {
-        @Override
-        public Response execute() {
-            return null;
-        }
-    };
+    private final Command command = () -> null;
 
     @Test
     void shouldParseKeyIfPrimitive() {

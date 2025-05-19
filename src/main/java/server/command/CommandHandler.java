@@ -2,7 +2,6 @@ package server.command;
 
 import server.Server;
 import server.database.Database;
-import server.database.JsonDatabase;
 import server.model.ClientRequest;
 import com.google.gson.JsonElement;
 import server.model.Response;
@@ -32,8 +31,7 @@ public class CommandHandler {
                 command = new DeleteCommand(db, key);
                 break;
             case "exit":
-                command = new ExitCommand();
-                server.shutdown();
+                command = new ExitCommand(server);
                 break;
             default:
                 return Response.EMPTY;

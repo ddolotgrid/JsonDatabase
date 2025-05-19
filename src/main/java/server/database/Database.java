@@ -2,7 +2,6 @@ package server.database;
 
 import com.google.gson.JsonElement;
 import server.model.Response;
-
 import java.util.List;
 
 public interface Database {

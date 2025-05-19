@@ -2,7 +2,6 @@ package server.command;
 
 import com.google.gson.JsonElement;
 import server.database.Database;
-import server.database.JsonDatabase;
 import server.model.Response;
 import java.util.List;
 

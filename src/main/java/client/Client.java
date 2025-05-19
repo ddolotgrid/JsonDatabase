@@ -1,7 +1,7 @@
 package client;
 
 import client.request.Request;
-
+import com.google.gson.JsonSyntaxException;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
@@ -13,7 +13,6 @@ public class Client {
     private static final int PORT = 4000;
     private static final String ADDRESS = "127.0.0.1";
     private static final Logger LOGGER = Logger.getLogger(Client.class.getName());
-
     private final Request request;
 
     public Client(Request request) {
@@ -35,7 +34,10 @@ public class Client {
             System.out.println("Received: " + msg);
 
         } catch (IOException e) {
-            LOGGER.log(Level.SEVERE,"Client connection error" + e.getMessage());
+            LOGGER.log(Level.SEVERE,"Client connection error " + e.getMessage());
+        }
+        catch (IllegalArgumentException | JsonSyntaxException ae){
+            LOGGER.log(Level.SEVERE,"Request not found or has wrong format");
         }
     }
 }

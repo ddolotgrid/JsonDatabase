@@ -14,14 +14,13 @@ import java.util.logging.Logger;
 
 public class JsonFileHandler implements FileHandler {
     private final ReadWriteLock reentrantLock;
-    private final Gson gson;
+    private static final Gson gson = new Gson();
     private static final String FILEPATH = System.getProperty("user.dir") + "/src/main/java/server/data/";
     private final String fileName;
     private static final Logger LOGGER = Logger.getLogger(JsonFileHandler.class.getName());
 
     public JsonFileHandler(String fileName) {
         this.reentrantLock = new ReentrantReadWriteLock();
-        this.gson = new Gson();
         this.fileName = fileName;
     }
 

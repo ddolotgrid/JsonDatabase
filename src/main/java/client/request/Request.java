@@ -4,48 +4,43 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.annotations.Expose;
 import com.google.gson.JsonObject;
-
+import lombok.Getter;
+import lombok.Setter;
 import java.io.FileReader;
 import java.io.IOException;
 
+@Getter
+@Setter
 public class Request {
 
     private String filePath = System.getProperty("user.dir") + "/src/main/java/client/data/";
+    private static final Gson gson = new GsonBuilder()
+            .excludeFieldsWithoutExposeAnnotation()
+            .create();
 
     @Expose
     @Parameter(names = {"-t", "--type"}, description = "Type of the request")
-    public String type;
+    private String type;
 
     @Expose
     @Parameter(names = {"-k", "--key"}, description = "Record key")
-    public String key;
+    private String key;
 
     @Expose
     @Parameter(names = {"-v", "--value"}, description = "Value to add")
-    public String value;
+    private String value;
 
     @Parameter(names = {"-in", "--input-file"}, description = "File containing the request")
-    public String fileName;
+    private String fileName;
 
-
-    public String getRequest() {
-        Gson gson = new GsonBuilder()
-                .excludeFieldsWithoutExposeAnnotation()
-                .create();
-
-        if (fileName != null) {
+    public String getRequest() throws IOException,IllegalArgumentException{
+        if(fileName != null){
             try (FileReader reader = new FileReader(filePath+fileName)) {
                 JsonObject json = gson.fromJson(reader, JsonObject.class);
+                if(json == null || json.entrySet().isEmpty()) throw new IllegalArgumentException();
                 return gson.toJson(json);
-            } catch (IOException e) {
-                System.out.println("Error reading file: " + e.getMessage());
-                return "{}";
             }
         }
         return gson.toJson(this);
-    }
-
-    public void setFilePath(String filePath) {
-        this.filePath = filePath;
     }
 }
