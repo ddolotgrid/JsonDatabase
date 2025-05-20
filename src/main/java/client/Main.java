@@ -14,8 +14,15 @@ public class Main {
             Client client = new Client(request);
             client.start();
         } catch (ParameterException pe) {
-            LOGGER.log(Level.SEVERE,"found empty or incorrect flag: correct format is -<flag> <value>\n" +
-                    "-t = type\n -k = key\n -v value\n -in filename");
+            LOGGER.log(Level.SEVERE, "Found empty or incorrect flag.\n" +
+                    "Usage:\n" +
+                    "  Either provide a JSON request file:\n" +
+                    "    -in <filename>              (Name of request file eg. 'input.json')\n" +
+                    "  Or provide command-line parameters:\n" +
+                    "    -t <type>                   (Required: Request type: get, set, delete)\n" +
+                    "    -k <key>                    (Required: Key or nested key path)\n" +
+                    "    -v <value>                  (Optional: Value to set, only used with -t set)\n");
+
         }
     }
 }

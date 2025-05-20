@@ -19,10 +19,10 @@ import java.util.logging.Logger;
 public class Server {
     private static final int PORT = 4000;
     private final ExecutorService executorService;
-    private static final Gson gson = new Gson();
+    private static final Gson GSON = new Gson();
     private final CommandHandler commandHandler;
     private ServerSocket server;
-    private static final Logger logger = Logger.getLogger(Server.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(Server.class.getName());
 
     public Server(JsonDatabase database) {
         this.executorService = Executors.newCachedThreadPool(
@@ -38,37 +38,37 @@ public class Server {
                 Socket socket = server.accept();
 
                 executorService.submit(() -> {
-                    logger.info(Thread.currentThread().getName());
+                    LOGGER.info(Thread.currentThread().getName());
                     try (
                             DataInputStream input = new DataInputStream(socket.getInputStream());
                             DataOutputStream output = new DataOutputStream(socket.getOutputStream())
                     ) {
                         String msg = input.readUTF();
                         System.out.println("Received: " + msg);
-                        ClientRequest clientRequest = gson.fromJson(msg, ClientRequest.class);
+                        ClientRequest clientRequest = GSON.fromJson(msg, ClientRequest.class);
 
                         Response serverResponse = commandHandler.executeRequest(clientRequest);
-                        String jsonServerResponse = gson.toJson(serverResponse);
+                        String jsonServerResponse = GSON.toJson(serverResponse);
                         output.writeUTF(jsonServerResponse);
                         System.out.println("Sent: " + jsonServerResponse);
                     } catch (IOException e) {
-                        logger.log(Level.SEVERE,"Client connection error");
+                        LOGGER.log(Level.SEVERE,"Client connection error");
                     }
                 });
             }
         } catch (IOException e) {
-            logger.log(Level.SEVERE,"Server error" + e.getMessage());
+            LOGGER.log(Level.SEVERE,"Server error" + e.getMessage());
         }
     }
 
     public void shutdown() {
-        logger.info("Shutting down server.");
+        LOGGER.info("Shutting down server.");
         executorService.shutdown();
         try {
             server.close();
-            logger.log(Level.INFO,"Server closed successfully.");
+            LOGGER.log(Level.INFO,"Server closed successfully.");
         } catch (IOException e) {
-            logger.log(Level.WARNING,"Failed to shutdown server.");
+            LOGGER.log(Level.WARNING,"Failed to shutdown server.");
         }
     }
 }

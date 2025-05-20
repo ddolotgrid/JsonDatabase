@@ -33,11 +33,12 @@ public class Client {
             String msg = in.readUTF(); //receive msg back from server
             System.out.println("Received: " + msg);
 
-        } catch (IOException e) {
-            LOGGER.log(Level.SEVERE,"Client connection error " + e.getMessage());
-        }
-        catch (IllegalArgumentException | JsonSyntaxException ae){
-            LOGGER.log(Level.SEVERE,"Request not found or has wrong format");
+        } catch (JsonSyntaxException jse) {
+            LOGGER.log(Level.SEVERE, "Invalid JSON in input file: " + jse.getMessage());
+        } catch (IllegalArgumentException iae) {
+            LOGGER.log(Level.SEVERE, iae.getMessage());
+        } catch (IOException ioe) {
+            LOGGER.log(Level.SEVERE, "Client connection error: " + ioe.getMessage());
         }
     }
 }

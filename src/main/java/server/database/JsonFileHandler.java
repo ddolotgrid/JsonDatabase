@@ -14,7 +14,7 @@ import java.util.logging.Logger;
 
 public class JsonFileHandler implements FileHandler {
     private final ReadWriteLock reentrantLock;
-    private static final Gson gson = new Gson();
+    private static final Gson GSON = new Gson();
     private static final String FILEPATH = System.getProperty("user.dir") + "/src/main/java/server/data/";
     private final String fileName;
     private static final Logger LOGGER = Logger.getLogger(JsonFileHandler.class.getName());
@@ -27,7 +27,7 @@ public class JsonFileHandler implements FileHandler {
     public JsonObject read() {
         reentrantLock.readLock().lock();
         try (BufferedReader reader = Files.newBufferedReader(Paths.get(FILEPATH+fileName))) {
-            return gson.fromJson(reader, JsonObject.class);
+            return GSON.fromJson(reader, JsonObject.class);
         } catch (IOException e) {
             LOGGER.log(Level.SEVERE,"Failed to read data from file" + e.getMessage());
         } finally {
@@ -39,7 +39,7 @@ public class JsonFileHandler implements FileHandler {
     public void write(JsonObject storage) {
         reentrantLock.writeLock().lock();
         try (BufferedWriter writer = Files.newBufferedWriter(Paths.get(FILEPATH+fileName))) {
-            gson.toJson(storage,writer);
+            GSON.toJson(storage,writer);
         } catch (IOException e) {
             LOGGER.log(Level.SEVERE,"Failed to write data to file" + e.getMessage());
         } finally {

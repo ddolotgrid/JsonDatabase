@@ -36,10 +36,7 @@ class RequestTest {
         String expectedJson = "{\"type\":\"get\",\"key\":\"person\",\"value\":\"value\"}";
 
         // then
-        assertEquals(
-                JsonParser.parseString(expectedJson),
-                JsonParser.parseString(actualJson)
-        );
+        assertEquals(expectedJson,actualJson);
     }
     @Test
     void shouldHandleJsonFileArgs() throws IOException{

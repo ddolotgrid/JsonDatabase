@@ -14,7 +14,7 @@ import java.io.IOException;
 public class Request {
 
     private String filePath = System.getProperty("user.dir") + "/src/main/java/client/data/";
-    private static final Gson gson = new GsonBuilder()
+    private static final Gson GSON = new GsonBuilder()
             .excludeFieldsWithoutExposeAnnotation()
             .create();
 
@@ -33,14 +33,16 @@ public class Request {
     @Parameter(names = {"-in", "--input-file"}, description = "File containing the request")
     private String fileName;
 
-    public String getRequest() throws IOException,IllegalArgumentException{
-        if(fileName != null){
-            try (FileReader reader = new FileReader(filePath+fileName)) {
-                JsonObject json = gson.fromJson(reader, JsonObject.class);
-                if(json == null || json.entrySet().isEmpty()) throw new IllegalArgumentException();
-                return gson.toJson(json);
-            }
+    public String getRequest() throws IOException, IllegalArgumentException {
+        if (fileName == null) {
+            return GSON.toJson(this);
         }
-        return gson.toJson(this);
+        try (FileReader reader = new FileReader(filePath + fileName)) {
+            JsonObject fileContent = GSON.fromJson(reader, JsonObject.class);
+            if (fileContent == null || fileContent.entrySet().isEmpty()) {
+                throw new IllegalArgumentException("The file '" + filePath + fileName + "' is empty or blank JSON Object");
+            }
+            return GSON.toJson(fileContent);
+        }
     }
 }
