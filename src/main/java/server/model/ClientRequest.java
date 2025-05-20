@@ -8,4 +8,5 @@ public class ClientRequest {
     private String type;
     private JsonElement key;
     private JsonElement value;
+
 }

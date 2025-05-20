@@ -19,7 +19,7 @@ import java.util.logging.Logger;
 public class Server {
     private static final int PORT = 4000;
     private final ExecutorService executorService;
-    private static final Gson GSON = new Gson();
+    private final Gson GSON = new Gson();
     private final CommandHandler commandHandler;
     private ServerSocket server;
     private static final Logger LOGGER = Logger.getLogger(Server.class.getName());

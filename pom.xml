@@ -23,14 +23,14 @@
         <pmd.version>3.26.0</pmd.version>
         <spotbugs.version>4.9.3.0</spotbugs.version>
         <jacoco.version>0.8.12</jacoco.version>
+        <lombok.version>1.18.30</lombok.version>
     </properties>
 
     <dependencies>
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
-            <version>1.18.30</version>
-            <scope>provided</scope>
+            <version>${lombok.version}</version>
         </dependency>
         <dependency>
             <groupId>com.google.guava</groupId>
@@ -89,6 +89,21 @@
 
     <build>
         <plugins>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.8.1</version>
+                <configuration>
+                    <annotationProcessorPaths>
+                        <path>
+                            <groupId>org.projectlombok</groupId>
+                            <artifactId>lombok</artifactId>
+                            <version>${lombok.version}</version>
+                        </path>
+                    </annotationProcessorPaths>
+                </configuration>
+            </plugin>
             <!-- CHECKSTYLE -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
